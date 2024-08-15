@@ -1,6 +1,6 @@
 "use client";
 
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, Send } from "lucide-react";
 
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -70,7 +70,9 @@ export default function Chat() {
             }
           }}
         />
-        <Button onClick={handleSubmit}>发送</Button>
+        <Button onClick={handleSubmit} size="icon">
+          <Send className="w-5 h-5" />
+        </Button>
       </div>
     </div>
   );
