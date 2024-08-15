@@ -1,0 +1,41 @@
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+interface ModelSelectorProps {
+  defaultValue: string;
+  value: string;
+  onValueChange: (value: string) => void;
+}
+
+export default function ModelSelector({
+  defaultValue,
+  value,
+  onValueChange,
+}: ModelSelectorProps) {
+  return (
+    <Select
+      defaultValue={defaultValue}
+      value={value}
+      onValueChange={onValueChange}
+    >
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="选择一个模型" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectLabel>大模型</SelectLabel>
+          <SelectItem value="gpt-4o">gpt-4o</SelectItem>
+          <SelectItem value="claude-3-5-sonnet">claude-3-5-sonnet</SelectItem>
+          <SelectItem value="gemini-1.5-pro">gemini-1.5-pro</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
+}
