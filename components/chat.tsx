@@ -1,5 +1,7 @@
 "use client";
 
+import { LoaderIcon } from "lucide-react";
+
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useChat } from "ai/react";
@@ -10,7 +12,16 @@ import MessageCard from "./message-card";
 
 export default function Chat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    stop,
+    error,
+    reload,
+  } = useChat({
     api: `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ai/chat`,
   });
 
@@ -28,6 +39,22 @@ export default function Chat() {
           messages.map((msg) => <MessageCard msg={msg} />)
         )}
 
+        {isLoading && (
+          <div className="flex items-center space-x-2">
+            <LoaderIcon className="animate-spin" />
+            <Button variant="secondary" onClick={() => stop()}>
+              终止
+            </Button>
+          </div>
+        )}
+
+        {error && (
+          <div className="flex items-center space-x-2">
+            <div>发生了一些错误。</div>
+            <Button onClick={() => reload()}>重试</Button>
+          </div>
+        )}
+
         <div ref={messagesEndRef} />
       </div>
       <div className="flex space-x-2">
@@ -36,7 +63,12 @@ export default function Chat() {
           className="flex-1 p-2 border border-gray-300 rounded-l"
           value={input}
           onChange={handleInputChange}
-          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          onKeyDown={(e) => {
+            if (!e.nativeEvent.isComposing && e.key === "Enter") {
+              e.preventDefault();
+              handleSubmit();
+            }
+          }}
         />
         <Button onClick={handleSubmit}>发送</Button>
       </div>
