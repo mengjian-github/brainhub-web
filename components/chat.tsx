@@ -1,42 +1,44 @@
 "use client";
 
-import { useState } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useChat } from "ai/react";
+import { useEffect, useRef } from "react";
+
+import "./chat.css";
+import MessageCard from "./message-card";
 
 export default function Chat() {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [input, setInput] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ai/chat`,
+  });
 
-  const sendMessage = () => {
-    if (input.trim()) {
-      setMessages([...messages, input]);
-      setInput("");
-    }
-  };
+  // 自动滚动到底部
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
-    <div className="w-1/2 mx-auto p-4 flex flex-col h-screen">
-      <div className="flex-1 overflow-y-auto mb-4">
+    <div className="w-2/3 mx-auto p-4 flex flex-col h-screen">
+      <div className="chat-scroll-container flex-1 overflow-y-auto mb-4">
         {messages.length === 0 ? (
           <Empty />
         ) : (
-          messages.map((msg, index) => (
-            <div key={index} className="p-2 my-2 bg-gray-200 rounded">
-              {msg}
-            </div>
-          ))
+          messages.map((msg) => <MessageCard msg={msg} />)
         )}
+
+        <div ref={messagesEndRef} />
       </div>
       <div className="flex space-x-2">
         <Input
           type="text"
           className="flex-1 p-2 border border-gray-300 rounded-l"
           value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+          onChange={handleInputChange}
+          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
         />
-        <Button onClick={sendMessage}>发送</Button>
+        <Button onClick={handleSubmit}>发送</Button>
       </div>
     </div>
   );
