@@ -30,10 +30,16 @@ export default function ModelSelector({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>大模型</SelectLabel>
+          <SelectLabel>超大模型</SelectLabel>
           <SelectItem value="gpt-4o">gpt-4o</SelectItem>
           <SelectItem value="claude-3-5-sonnet">claude-3-5-sonnet</SelectItem>
           <SelectItem value="gemini-1.5-pro">gemini-1.5-pro</SelectItem>
+        </SelectGroup>
+        <SelectGroup>
+          <SelectLabel>实惠模型</SelectLabel>
+          <SelectItem value="gemini-1.5-flash">gemini-1.5-flash</SelectItem>
+          <SelectItem value="claude-3-haiku">claude-3-haiku</SelectItem>
+          <SelectItem value="gpt-4o-mini">gpt-4o-mini</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
