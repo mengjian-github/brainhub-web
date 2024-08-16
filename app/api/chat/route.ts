@@ -20,10 +20,11 @@ const SUPPORTED_AI_MODELS: SupportedAiModels = {
 };
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, model }: { messages: any[]; model: ModuleName } =
+    await req.json();
 
   const result = await streamText({
-    model: openai("gpt-4-turbo"),
+    model: SUPPORTED_AI_MODELS[model],
     system: "You are a helpful assistant.",
     messages: convertToCoreMessages(messages),
   });
