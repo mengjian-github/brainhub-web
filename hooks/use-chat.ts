@@ -25,9 +25,7 @@ export default function useChat() {
     stop,
     error,
     reload: originReload,
-  } = useAIChat({
-    api: `${process.env.NEXT_PUBLIC_GATEWAY_URL}/ai/chat`,
-  });
+  } = useAIChat();
 
   // 自动滚动到底部
   useEffect(() => {
