@@ -5,6 +5,7 @@ const useKeyboardStatus = () => {
 
   useEffect(() => {
     const handleResize = () => {
+      alert(window.innerHeight);
       if (window.innerHeight < 500) {
         // 这个值可以根据需要调整
         setIsKeyboardVisible(true);
