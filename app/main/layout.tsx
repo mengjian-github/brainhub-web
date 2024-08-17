@@ -1,34 +1,22 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import Sidebar from "@/components/sidebar";
-import { useEffect, useState } from "react";
-import useIsPC, { checkIsPC } from "@/hooks/use-is-pc";
 import NoSSR from "@/components/no-ssr";
+import { SidebarProvider } from "@/providers/sidebar";
+import { useSidebar } from "@/hooks/use-sidebar";
 
-export default function MainLayout({
+const Main = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
-  const isPC = useIsPC();
-  const [isOpen, setIsOpen] = useState(isPC);
-
-  useEffect(() => {
-    setIsOpen(isPC);
-  }, [isPC]);
-
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+}>) => {
+  const { isOpen, toggleSidebar, onSidebarSelected } = useSidebar();
 
   return (
     <div className="flex min-h-screen">
       <NoSSR>
         <Sidebar
-          onSelectItem={(item) => {
-            !isPC && toggleSidebar(); // 移动端切换后直接收起
-          }}
+          onSelectItem={onSidebarSelected}
           isOpen={isOpen}
           toggleSidebar={toggleSidebar}
         />
@@ -48,5 +36,17 @@ export default function MainLayout({
         </main>
       </NoSSR>
     </div>
+  );
+};
+
+export default function MainLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <SidebarProvider>
+      <Main>{children}</Main>
+    </SidebarProvider>
   );
 }

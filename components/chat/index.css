@@ -1,8 +1,15 @@
 .chat-scroll-container::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .chat-scroll-container {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  z-index: 5; /* 确保固定区域在其他内容之上 */
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}

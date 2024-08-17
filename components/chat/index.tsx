@@ -9,6 +9,8 @@ import useChat from "@/hooks/use-chat";
 import ModelSelector from "./model-selector";
 import MessageCard from "./message-card";
 import { Empty } from "./empty";
+import { useSidebar } from "@/hooks/use-sidebar";
+import useIsPC from "@/hooks/use-is-pc";
 
 export default function Chat() {
   const {
@@ -25,10 +27,15 @@ export default function Chat() {
     handleKeyDown,
     handleButtonClick,
   } = useChat();
+  const { isOpen } = useSidebar();
+  const isPC = useIsPC();
 
   return (
-    <div className="flex flex-col justify-between h-full w-full">
-      <div className="chat-scroll-container flex-1 overflow-y-auto ">
+    <div className="h-full w-full">
+      <div
+        className="chat-scroll-container overflow-y-auto"
+        style={{ height: `calc(100vh - 8rem)` }}
+      >
         {messages.length === 0 ? (
           <Empty />
         ) : (
@@ -55,7 +62,12 @@ export default function Chat() {
 
         <div ref={messagesEndRef} />
       </div>
-      <div>
+      <div
+        className="fixed-bottom"
+        style={{
+          width: isOpen && isPC ? "calc(100% - 18rem)" : "calc(100% - 2rem)",
+        }}
+      >
         <div className="flex mb-2">
           <ModelSelector
             defaultValue={selectedModel}
