@@ -13,7 +13,6 @@ export default function MainLayout({
 }>) {
   const isPC = useIsPC();
   const [isOpen, setIsOpen] = useState(isPC);
-  const router = useRouter();
 
   useEffect(() => {
     setIsOpen(isPC);
@@ -28,7 +27,6 @@ export default function MainLayout({
       <NoSSR>
         <Sidebar
           onSelectItem={(item) => {
-            router.push(item);
             !isPC && toggleSidebar(); // 移动端切换后直接收起
           }}
           isOpen={isOpen}

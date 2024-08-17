@@ -35,8 +35,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   isOpen,
   toggleSidebar,
 }) => {
-  const pathname = usePathname();
-
   return (
     <div className="flex">
       <div
@@ -57,7 +55,6 @@ const Sidebar: React.FC<SidebarProps> = ({
           {sidebarItems.map(({ path, itemName, Icon }: SidebarItemType) => (
             <SidebarItem
               key={path}
-              active={pathname === path}
               itemName={itemName}
               path={path}
               onSelectItem={onSelectItem}

@@ -1,7 +1,8 @@
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 interface SidebarItemProps {
-  active: boolean;
   itemName: string;
   path: string;
   onSelectItem: (item: string) => void;
@@ -9,23 +10,25 @@ interface SidebarItemProps {
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
-  active,
   itemName,
   onSelectItem,
   path,
   Icon,
 }) => {
+  const pathname = usePathname();
   return (
-    <a
-      href="#"
+    <Link
+      key={path}
+      href={path}
+      passHref
       className={`flex items-center py-2.5 px-6 hover:bg-gray-200 ${
-        active ? "bg-gray-300" : ""
+        pathname === path ? "bg-gray-300" : ""
       }`}
       onClick={() => onSelectItem(path)}
     >
       <Icon className="w-5 h-5 mr-3" />
       {itemName}
-    </a>
+    </Link>
   );
 };
 
