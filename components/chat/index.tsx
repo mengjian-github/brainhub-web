@@ -27,8 +27,8 @@ export default function Chat() {
   } = useChat();
 
   return (
-    <div className="w-full sm:w-2/3 mx-auto p-4 flex flex-col h-screen">
-      <div className="chat-scroll-container flex-1 overflow-y-auto mb-4">
+    <div className="flex flex-col justify-between h-full w-full">
+      <div className="chat-scroll-container flex-1 overflow-y-auto ">
         {messages.length === 0 ? (
           <Empty />
         ) : (
@@ -55,24 +55,26 @@ export default function Chat() {
 
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex mb-2">
-        <ModelSelector
-          defaultValue={selectedModel}
-          value={selectedModel}
-          onValueChange={handleModelChange}
-        />
-      </div>
-      <div className="flex space-x-2">
-        <Input
-          type="text"
-          className="flex-1 p-2 border border-gray-300 rounded-l"
-          value={input}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-        />
-        <Button onClick={handleButtonClick} size="icon">
-          <Send className="w-5 h-5" />
-        </Button>
+      <div>
+        <div className="flex mb-2">
+          <ModelSelector
+            defaultValue={selectedModel}
+            value={selectedModel}
+            onValueChange={handleModelChange}
+          />
+        </div>
+        <div className="flex space-x-2">
+          <Input
+            type="text"
+            className="flex-1 p-2 border border-gray-300 rounded-l"
+            value={input}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+          />
+          <Button onClick={handleButtonClick} size="icon">
+            <Send className="w-5 h-5" />
+          </Button>
+        </div>
       </div>
     </div>
   );
