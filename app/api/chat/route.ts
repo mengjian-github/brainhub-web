@@ -3,8 +3,6 @@ import { anthropic, createAnthropic } from "@ai-sdk/anthropic";
 import { createGoogleGenerativeAI, google } from "@ai-sdk/google";
 import { convertToCoreMessages, LanguageModel, streamText } from "ai";
 
-export const runtime = "edge";
-
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
