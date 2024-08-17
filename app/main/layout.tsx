@@ -3,18 +3,16 @@
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/sidebar";
 import { useEffect, useState } from "react";
+import useIsPC from "@/hooks/use-is-pc";
 
 export default function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isOpen, setIsOpen] = useState(false);
+  const isPC = useIsPC();
+  const [isOpen, setIsOpen] = useState(isPC);
   const router = useRouter();
-
-  useEffect(() => {
-    setIsOpen(window.innerWidth >= 640);
-  }, []);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -25,6 +23,7 @@ export default function MainLayout({
       <Sidebar
         onSelectItem={(item) => {
           router.push(item);
+          !isPC && toggleSidebar(); // 移动端切换后直接收起
         }}
         isOpen={isOpen}
         toggleSidebar={toggleSidebar}
