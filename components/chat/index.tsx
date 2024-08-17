@@ -12,6 +12,7 @@ import { Empty } from "./empty";
 import { useSidebar } from "@/hooks/use-sidebar";
 import useIsPC from "@/hooks/use-is-pc";
 import useKeyboardStatus from "@/hooks/use-keyboard-status";
+import useDeviceType from "@/hooks/use-device-type";
 
 export default function Chat() {
   const {
@@ -30,16 +31,18 @@ export default function Chat() {
   } = useChat();
   const { isOpen } = useSidebar();
   const isPC = useIsPC();
-  const isKeyboardVisible = useKeyboardStatus();
+  const { isKeyboardVisible, keyboardHeight } = useKeyboardStatus();
+  const { isIOS } = useDeviceType();
 
   return (
     <div className="h-full w-full">
       <div
         className="chat-scroll-container overflow-y-auto"
         style={{
-          height: isKeyboardVisible
-            ? `calc(${window.innerHeight + "px"} - 10rem)`
-            : "calc(100vh - 10rem)",
+          height:
+            isKeyboardVisible && isIOS
+              ? `calc(100vh - 10rem - ${keyboardHeight}px)`
+              : "calc(100vh - 10rem)",
         }}
       >
         {messages.length === 0 ? (
