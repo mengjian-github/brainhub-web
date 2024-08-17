@@ -6,7 +6,6 @@ const useKeyboardStatus = () => {
   const { isIOS, isAndroid } = useDeviceType();
 
   useEffect(() => {
-    alert(window.innerHeight);
     let originHeight =
       document.documentElement.clientHeight || document.body.clientHeight;
 
@@ -22,10 +21,9 @@ const useKeyboardStatus = () => {
     };
 
     const handleFocus = () => {
-      setIsKeyboardVisible(true);
       setTimeout(() => {
-        alert(window.innerHeight);
-      }, 500);
+        setIsKeyboardVisible(true);
+      }, 200);
     };
 
     const handleBlur = () => {

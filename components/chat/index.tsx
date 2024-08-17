@@ -41,7 +41,7 @@ export default function Chat() {
         style={{
           height:
             isKeyboardVisible && isIOS
-              ? `calc(100vh - 10rem - 50px)`
+              ? `calc(${window.innerHeight}px - 10rem)`
               : "calc(100vh - 10rem)",
         }}
       >
