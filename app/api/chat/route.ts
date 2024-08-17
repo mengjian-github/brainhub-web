@@ -1,6 +1,6 @@
-import { createOpenAI } from "@ai-sdk/openai";
-import { createAnthropic } from "@ai-sdk/anthropic";
-import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createOpenAI, openai } from "@ai-sdk/openai";
+import { anthropic, createAnthropic } from "@ai-sdk/anthropic";
+import { createGoogleGenerativeAI, google } from "@ai-sdk/google";
 import { convertToCoreMessages, LanguageModel, streamText } from "ai";
 
 export const runtime = "edge";
@@ -8,17 +8,17 @@ export const runtime = "edge";
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
-const openai = createOpenAI({
-  baseURL: process.env.OPENAI_BASE_URL,
-});
+// const openai = createOpenAI({
+//   baseURL: process.env.OPENAI_BASE_URL,
+// });
 
-const anthropic = createAnthropic({
-  baseURL: process.env.ANTHROPIC_BASE_URL,
-});
+// const anthropic = createAnthropic({
+//   baseURL: process.env.ANTHROPIC_BASE_URL,
+// });
 
-const google = createGoogleGenerativeAI({
-  baseURL: process.env.GOOGLE_BASE_URL,
-});
+// const google = createGoogleGenerativeAI({
+//   baseURL: process.env.GOOGLE_BASE_URL,
+// });
 
 type ModuleName =
   | "gpt-4o"
