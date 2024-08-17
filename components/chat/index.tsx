@@ -14,6 +14,11 @@ import useIsPC from "@/hooks/use-is-pc";
 import useKeyboardStatus from "@/hooks/use-keyboard-status";
 import useDeviceType from "@/hooks/use-device-type";
 
+function getInnerHeight() {
+  alert(window.innerHeight);
+  return window.innerHeight;
+}
+
 export default function Chat() {
   const {
     messagesEndRef,
@@ -41,7 +46,7 @@ export default function Chat() {
         style={{
           height:
             isKeyboardVisible && isIOS
-              ? `calc(${window.innerHeight}px - 10rem)`
+              ? `calc(${getInnerHeight()}px - 10rem)`
               : "calc(100vh - 10rem)",
         }}
       >
