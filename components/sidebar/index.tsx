@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import React from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -9,13 +9,21 @@ import {
   BookOpen,
   Edit,
 } from "lucide-react";
+import SidebarItem from "./sidebar-item";
 
 interface SidebarProps {
+  selectedItem: string;
+  onSelectItem: (item: string) => void;
   isOpen: boolean;
   toggleSidebar: () => void;
 }
 
-const Sidebar: FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  selectedItem,
+  onSelectItem,
+  isOpen,
+  toggleSidebar,
+}) => {
   return (
     <div className="flex">
       <div
@@ -23,7 +31,7 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out bg-gray-100 text-gray-900 w-64`}
       >
-        <div className="flex items-center justify-between p-4 bg-gray-200">
+        <div className="flex items-center justify-between p-6 pr-4">
           <div className="flex items-center space-x-2">
             <span className="text-xl font-bold">智脑</span>
             <span>开启你的AI未来</span>
@@ -32,35 +40,31 @@ const Sidebar: FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             <ChevronLeft className="w-6 h-6" />
           </button>
         </div>
-        <nav className="mt-4">
-          <a
-            href="#"
-            className="flex items-center py-2.5 px-6 hover:bg-gray-300"
-          >
-            <MessageSquare className="w-5 h-5 mr-3" />
-            聊天
-          </a>
-          <a
-            href="#"
-            className="flex items-center py-2.5 px-6 hover:bg-gray-300"
-          >
-            <Search className="w-5 h-5 mr-3" />
-            搜索
-          </a>
-          <a
-            href="#"
-            className="flex items-center py-2.5 px-6 hover:bg-gray-300"
-          >
-            <BookOpen className="w-5 h-5 mr-3" />
-            阅读
-          </a>
-          <a
-            href="#"
-            className="flex items-center py-2.5 px-6 hover:bg-gray-300"
-          >
-            <Edit className="w-5 h-5 mr-3" />
-            写作
-          </a>
+        <nav>
+          <SidebarItem
+            selectedItem={selectedItem}
+            itemName="聊天"
+            onSelectItem={onSelectItem}
+            Icon={MessageSquare}
+          />
+          <SidebarItem
+            selectedItem={selectedItem}
+            itemName="搜索"
+            onSelectItem={onSelectItem}
+            Icon={Search}
+          />
+          <SidebarItem
+            selectedItem={selectedItem}
+            itemName="阅读"
+            onSelectItem={onSelectItem}
+            Icon={BookOpen}
+          />
+          <SidebarItem
+            selectedItem={selectedItem}
+            itemName="写作"
+            onSelectItem={onSelectItem}
+            Icon={Edit}
+          />
         </nav>
       </div>
       <button

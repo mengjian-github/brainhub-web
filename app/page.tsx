@@ -5,6 +5,7 @@ import Sidebar from "@/components/sidebar";
 import { useState, useEffect } from "react";
 
 export default function Home() {
+  const [selectedItem, setSelectedItem] = useState("chat");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -17,7 +18,12 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
+      <Sidebar
+        selectedItem={selectedItem}
+        onSelectItem={setSelectedItem}
+        isOpen={isOpen}
+        toggleSidebar={toggleSidebar}
+      />
       <main
         className={`flex-1 flex flex-col items-center justify-between p-4 transition-all duration-300 ${
           isOpen ? "md:ml-64" : "ml-0"
