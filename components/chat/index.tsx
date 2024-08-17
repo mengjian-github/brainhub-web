@@ -36,19 +36,10 @@ export default function Chat() {
   const { isOpen } = useSidebar();
   const isPC = useIsPC();
   const isKeyboardVisible = useKeyboardStatus();
-  const { isIOS } = useDeviceType();
 
   return (
     <div className="h-full w-full">
-      <div
-        className="chat-scroll-container overflow-y-auto"
-        style={{
-          height:
-            isKeyboardVisible && isIOS
-              ? `calc(${getInnerHeight()}px - 10rem)`
-              : "calc(100vh - 10rem)",
-        }}
-      >
+      <div className="chat-scroll-container overflow-y-auto">
         {messages.length === 0 ? (
           <Empty />
         ) : (
