@@ -11,7 +11,6 @@ import MessageCard from "./message-card";
 import { Empty } from "./empty";
 import { useSidebar } from "@/hooks/use-sidebar";
 import useIsPC from "@/hooks/use-is-pc";
-import useKeyboardStatus from "@/hooks/use-keyboard-status";
 
 function getInnerHeight() {
   return window.innerHeight;
@@ -34,16 +33,10 @@ export default function Chat() {
   } = useChat();
   const { isOpen } = useSidebar();
   const isPC = useIsPC();
-  const isKeyboardVisible = useKeyboardStatus();
 
   return (
     <div className="h-full w-full">
-      <div
-        className="chat-scroll-container overflow-y-auto"
-        style={{
-          height: "calc(100vh - 10rem)",
-        }}
-      >
+      <div className="chat-scroll-container overflow-y-auto">
         {messages.length === 0 ? (
           <Empty />
         ) : (
@@ -74,9 +67,6 @@ export default function Chat() {
         className="fixed-bottom"
         style={{
           width: isOpen && isPC ? "calc(100% - 18rem)" : "calc(100% - 2rem)",
-          paddingBottom: isKeyboardVisible
-            ? "1rem"
-            : "calc(1rem + env(safe-area-inset-bottom))",
         }}
       >
         <div className="flex mb-2">
