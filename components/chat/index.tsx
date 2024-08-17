@@ -27,7 +27,7 @@ export default function Chat() {
   } = useChat();
 
   return (
-    <div className="w-2/3 mx-auto p-4 flex flex-col h-screen">
+    <div className="w-full sm:w-2/3 mx-auto p-4 flex flex-col h-screen">
       <div className="chat-scroll-container flex-1 overflow-y-auto mb-4">
         {messages.length === 0 ? (
           <Empty />
