@@ -67,3 +67,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+html {
+  -webkit-text-size-adjust: 100% !important;
+  -moz-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
+}
