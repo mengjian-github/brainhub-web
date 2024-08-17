@@ -72,6 +72,9 @@ export default function Chat() {
         className="fixed-bottom"
         style={{
           width: isOpen && isPC ? "calc(100% - 18rem)" : "calc(100% - 2rem)",
+          paddingBottom: isKeyboardVisible
+            ? "1rem"
+            : "calc(1rem + env(safe-area-inset-bottom))",
         }}
       >
         <div className="flex mb-2">
