@@ -31,7 +31,7 @@ export default function Chat() {
   } = useChat();
   const { isOpen } = useSidebar();
   const isPC = useIsPC();
-  const { isKeyboardVisible, keyboardHeight } = useKeyboardStatus();
+  const isKeyboardVisible = useKeyboardStatus();
   const { isIOS } = useDeviceType();
 
   return (
@@ -41,7 +41,7 @@ export default function Chat() {
         style={{
           height:
             isKeyboardVisible && isIOS
-              ? `calc(100vh - 10rem - ${keyboardHeight}px)`
+              ? `calc(100vh - 10rem - 50px)`
               : "calc(100vh - 10rem)",
         }}
       >
