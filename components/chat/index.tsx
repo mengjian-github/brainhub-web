@@ -34,7 +34,7 @@ export default function Chat() {
     <div className="h-full w-full">
       <div
         className="chat-scroll-container overflow-y-auto"
-        style={{ height: `calc(100vh - 8rem)` }}
+        style={{ height: `calc(100vh - 9rem)` }}
       >
         {messages.length === 0 ? (
           <Empty />
@@ -82,6 +82,7 @@ export default function Chat() {
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
+            enterKeyHint="send"
           />
           <Button onClick={handleButtonClick} size="icon">
             <Send className="w-5 h-5" />
