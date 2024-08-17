@@ -15,6 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html>
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover"
+      ></meta>
       <body>
         {children}
         <Analytics />
