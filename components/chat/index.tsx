@@ -41,9 +41,7 @@ export default function Chat() {
       <div
         className="chat-scroll-container overflow-y-auto"
         style={{
-          height: isKeyboardVisible
-            ? `calc(${getInnerHeight()}px - 10rem)`
-            : "calc(100vh - 10rem)",
+          height: "calc(100vh - 10rem)",
         }}
       >
         {messages.length === 0 ? (

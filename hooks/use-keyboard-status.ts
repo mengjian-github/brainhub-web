@@ -21,9 +21,7 @@ const useKeyboardStatus = () => {
     };
 
     const handleFocus = () => {
-      setTimeout(() => {
-        setIsKeyboardVisible(true);
-      }, 200);
+      setIsKeyboardVisible(true);
     };
 
     const handleBlur = () => {
