@@ -17,8 +17,8 @@ export default function RootLayout({
     <html>
       <meta
         name="viewport"
-        content="width=device-width, initial-scale=1, viewport-fit=cover"
-      ></meta>
+        content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no"
+      />
       <body>
         {children}
         <Analytics />
