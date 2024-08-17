@@ -6,7 +6,6 @@ const useKeyboardStatus = () => {
   const { isIOS, isAndroid } = useDeviceType();
 
   useEffect(() => {
-    let initialScrollTop = document.documentElement.scrollTop;
     let originHeight =
       document.documentElement.clientHeight || document.body.clientHeight;
 
@@ -24,7 +23,6 @@ const useKeyboardStatus = () => {
     const handleFocus = () => {
       setTimeout(() => {
         setIsKeyboardVisible(true);
-        document.documentElement.scrollTop = initialScrollTop;
       }, 200);
     };
 

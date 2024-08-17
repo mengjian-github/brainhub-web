@@ -12,7 +12,6 @@ import { Empty } from "./empty";
 import { useSidebar } from "@/hooks/use-sidebar";
 import useIsPC from "@/hooks/use-is-pc";
 import useKeyboardStatus from "@/hooks/use-keyboard-status";
-import useDeviceType from "@/hooks/use-device-type";
 
 function getInnerHeight() {
   return window.innerHeight;
