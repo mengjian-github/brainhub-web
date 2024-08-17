@@ -1,6 +1,6 @@
-import { createOpenAI, openai } from "@ai-sdk/openai";
-import { anthropic, createAnthropic } from "@ai-sdk/anthropic";
-import { createGoogleGenerativeAI, google } from "@ai-sdk/google";
+import { openai } from "@ai-sdk/openai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { google } from "@ai-sdk/google";
 import { convertToCoreMessages, LanguageModel, streamText } from "ai";
 
 // Allow streaming responses up to 30 seconds
