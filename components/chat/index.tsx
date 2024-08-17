@@ -15,7 +15,6 @@ import useKeyboardStatus from "@/hooks/use-keyboard-status";
 import useDeviceType from "@/hooks/use-device-type";
 
 function getInnerHeight() {
-  alert(window.innerHeight);
   return window.innerHeight;
 }
 
