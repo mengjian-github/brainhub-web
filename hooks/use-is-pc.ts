@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const checkIsPC = () => {
+export const checkIsPC = () => {
   if (typeof window !== "undefined") {
     return window.innerWidth >= 640;
   }
