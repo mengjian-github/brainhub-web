@@ -1,25 +1,27 @@
 import React from "react";
 
 interface SidebarItemProps {
-  selectedItem: string;
+  active: boolean;
   itemName: string;
+  path: string;
   onSelectItem: (item: string) => void;
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
-  selectedItem,
+  active,
   itemName,
   onSelectItem,
+  path,
   Icon,
 }) => {
   return (
     <a
       href="#"
       className={`flex items-center py-2.5 px-6 hover:bg-gray-200 ${
-        selectedItem === itemName ? "bg-gray-300" : ""
+        active ? "bg-gray-300" : ""
       }`}
-      onClick={() => onSelectItem(itemName)}
+      onClick={() => onSelectItem(path)}
     >
       <Icon className="w-5 h-5 mr-3" />
       {itemName}

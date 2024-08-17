@@ -1,29 +1,42 @@
 "use client";
 
-import React from "react";
+import SidebarItem from "./sidebar-item";
+import { usePathname } from "next/navigation";
 import {
-  ChevronLeft,
-  ChevronRight,
   MessageSquare,
   Search,
   BookOpen,
   Edit,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
-import SidebarItem from "./sidebar-item";
+
+interface SidebarItemType {
+  path: string;
+  itemName: string;
+  Icon: React.ComponentType;
+}
 
 interface SidebarProps {
-  selectedItem: string;
   onSelectItem: (item: string) => void;
   isOpen: boolean;
   toggleSidebar: () => void;
 }
 
+const sidebarItems: SidebarItemType[] = [
+  { path: "/main/chat", itemName: "聊天", Icon: MessageSquare },
+  { path: "/main/search", itemName: "搜索", Icon: Search },
+  { path: "/main/read", itemName: "阅读", Icon: BookOpen },
+  { path: "/main/write", itemName: "写作", Icon: Edit },
+];
+
 const Sidebar: React.FC<SidebarProps> = ({
-  selectedItem,
   onSelectItem,
   isOpen,
   toggleSidebar,
 }) => {
+  const pathname = usePathname();
+
   return (
     <div className="flex">
       <div
@@ -41,30 +54,16 @@ const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
         <nav>
-          <SidebarItem
-            selectedItem={selectedItem}
-            itemName="聊天"
-            onSelectItem={onSelectItem}
-            Icon={MessageSquare}
-          />
-          <SidebarItem
-            selectedItem={selectedItem}
-            itemName="搜索"
-            onSelectItem={onSelectItem}
-            Icon={Search}
-          />
-          <SidebarItem
-            selectedItem={selectedItem}
-            itemName="阅读"
-            onSelectItem={onSelectItem}
-            Icon={BookOpen}
-          />
-          <SidebarItem
-            selectedItem={selectedItem}
-            itemName="写作"
-            onSelectItem={onSelectItem}
-            Icon={Edit}
-          />
+          {sidebarItems.map(({ path, itemName, Icon }: SidebarItemType) => (
+            <SidebarItem
+              key={path}
+              active={pathname === path}
+              itemName={itemName}
+              path={path}
+              onSelectItem={onSelectItem}
+              Icon={Icon}
+            />
+          ))}
         </nav>
       </div>
       <button
