@@ -9,14 +9,19 @@ interface MessageCardProps {
 }
 
 export default function MessageCard({ msg }: MessageCardProps) {
-  const userStyles = "p-3 bg-primary text-white rounded-lg shadow-md";
-  const assistantStyles = "p-3 bg-secondary text-gray-800 rounded-lg shadow-md";
+  const userStyles =
+    "p-3 bg-primary text-white rounded-lg shadow-md max-w-full";
+  const assistantStyles =
+    "p-3 bg-secondary text-gray-800 rounded-lg shadow-md max-w-full";
 
   return (
     <div
       className={`flex ${
         msg.role === "user" ? "justify-end" : "justify-start"
       } my-4`}
+      style={{
+        maxWidth: "calc(100vw - 2rem)",
+      }}
     >
       <div className={msg.role === "user" ? userStyles : assistantStyles}>
         <ReactMarkdown
