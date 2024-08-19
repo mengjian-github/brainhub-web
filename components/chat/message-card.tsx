@@ -3,16 +3,19 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { useSidebar } from "@/hooks/use-sidebar";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface MessageCardProps {
   msg: Message;
 }
 
 export default function MessageCard({ msg }: MessageCardProps) {
+  const { isOpen } = useSidebar();
   const userStyles =
-    "p-3 bg-primary text-white rounded-lg shadow-md max-w-full";
+    "p-3 bg-primary text-white rounded-lg shadow-md max-w-full prose";
   const assistantStyles =
-    "p-3 bg-secondary text-gray-800 rounded-lg shadow-md max-w-full";
+    "p-3 bg-secondary text-gray-800 rounded-lg shadow-md max-w-full prose";
 
   return (
     <div
@@ -20,7 +23,7 @@ export default function MessageCard({ msg }: MessageCardProps) {
         msg.role === "user" ? "justify-end" : "justify-start"
       } my-4`}
       style={{
-        maxWidth: "calc(100vw - 2rem)",
+        maxWidth: isOpen ? "calc(100vw - 18rem)" : "calc(100vw - 2rem)",
       }}
     >
       <div className={msg.role === "user" ? userStyles : assistantStyles}>
@@ -33,12 +36,7 @@ export default function MessageCard({ msg }: MessageCardProps) {
                 <SyntaxHighlighter
                   language={match[1]}
                   PreTag="div"
-                  customStyle={{
-                    padding: "10px",
-                    borderRadius: "5px",
-                    backgroundColor: "#fdf6e3",
-                    fontSize: "0.9em", // 调小字体大小
-                  }}
+                  style={oneDark}
                   {...(props as any)}
                 >
                   {String(children).replace(/\n$/, "")}
