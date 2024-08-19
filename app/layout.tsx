@@ -5,7 +5,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "智脑-开启你的AI未来",
-  description: "开启你的AI未来",
+  description: "你的专属AI助手，快来体验吧！",
+  openGraph: {
+    title: "智脑-开启你的AI未来",
+    description: "你的专属AI助手，快来体验吧！",
+    images: "/logo.png",
+  },
 };
 
 export const viewport: Viewport = {
