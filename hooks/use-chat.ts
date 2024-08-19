@@ -1,20 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { useChat as useAIChat } from "ai/react";
 
 export default function useChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [selectedModel, setSelectedModel] = useState<string>("");
 
-  useEffect(() => {
-    const storedModel = localStorage.getItem("selectedModel");
-    if (storedModel) {
-      setSelectedModel(storedModel);
-    } else {
-      setSelectedModel("claude-3-5-sonnet");
-    }
-  }, []);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const {
     messages,
@@ -26,6 +19,15 @@ export default function useChat() {
     error,
     reload: originReload,
   } = useAIChat();
+
+  useEffect(() => {
+    const storedModel = localStorage.getItem("selectedModel");
+    if (storedModel) {
+      setSelectedModel(storedModel);
+    } else {
+      setSelectedModel("claude-3-5-sonnet");
+    }
+  }, []);
 
   // 自动滚动到底部
   useEffect(() => {
@@ -40,11 +42,13 @@ export default function useChat() {
     [setSelectedModel]
   );
 
-  const modelRequestBody = {
-    body: {
-      model: selectedModel,
-    },
-  };
+  const modelRequestBody = useMemo(() => {
+    return {
+      body: {
+        model: selectedModel,
+      },
+    };
+  }, [selectedModel]);
 
   const reload = () => {
     originReload(modelRequestBody);
@@ -54,14 +58,14 @@ export default function useChat() {
     (e: React.SyntheticEvent) => {
       handleSubmit(e, modelRequestBody);
     },
-    [selectedModel, handleSubmit]
+    [handleSubmit, modelRequestBody]
   );
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (!e.nativeEvent.isComposing && e.key === "Enter") {
-        e.preventDefault();
         handleSubmitWithModel(e);
+        inputRef.current?.blur();
       }
     },
     [handleSubmitWithModel]
