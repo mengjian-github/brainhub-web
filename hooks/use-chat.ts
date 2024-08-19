@@ -92,5 +92,6 @@ export default function useChat() {
     handleModelChange,
     handleKeyDown,
     handleButtonClick,
+    inputRef,
   };
 }

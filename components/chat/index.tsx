@@ -30,6 +30,7 @@ export default function Chat() {
     handleModelChange,
     handleKeyDown,
     handleButtonClick,
+    inputRef,
   } = useChat();
   const { isOpen } = useSidebar();
   const isPC = useIsPC();
@@ -78,6 +79,7 @@ export default function Chat() {
         </div>
         <div className="flex space-x-2">
           <Input
+            ref={inputRef}
             type="text"
             className="flex-1 p-2 border border-gray-300 rounded-l"
             value={input}
