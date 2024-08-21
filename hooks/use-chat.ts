@@ -7,7 +7,7 @@ export default function useChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [selectedModel, setSelectedModel] = useState<string>("");
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   const {
     messages,
@@ -62,8 +62,8 @@ export default function useChat() {
   );
 
   const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (!e.nativeEvent.isComposing && e.key === "Enter") {
+    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (!e.nativeEvent.isComposing && e.key === "Enter" && !e.shiftKey) {
         handleSubmitWithModel(e);
         inputRef.current?.blur();
       }

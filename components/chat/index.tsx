@@ -1,7 +1,6 @@
 "use client";
 
 import { LoaderIcon, Send } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import "./index.css";
 
@@ -11,6 +10,7 @@ import MessageCard from "./message-card";
 import { Empty } from "./empty";
 import { useSidebar } from "@/hooks/use-sidebar";
 import useIsPC from "@/hooks/use-is-pc";
+import { Textarea } from "../ui/textarea";
 
 function getInnerHeight() {
   return window.innerHeight;
@@ -77,17 +77,21 @@ export default function Chat() {
             onValueChange={handleModelChange}
           />
         </div>
-        <div className="flex space-x-2">
-          <Input
+        <div className="relative flex-1">
+          <Textarea
             ref={inputRef}
-            type="text"
-            className="flex-1 p-2 border border-gray-300 rounded-l"
             value={input}
             onChange={handleInputChange}
+            className="w-full p-2 pr-12 border border-gray-300 rounded"
             onKeyDown={handleKeyDown}
-            enterKeyHint="send"
+            placeholder="请输入内容，shift+回车换行，回车发送"
           />
-          <Button onClick={handleButtonClick} size="icon">
+          <Button 
+            onClick={handleButtonClick} 
+            size="icon" 
+            variant="ghost"
+            className="absolute bottom-0 right-0 hover:bg-transparent"
+          >
             <Send className="w-5 h-5" />
           </Button>
         </div>

@@ -2,6 +2,7 @@ import { Message } from "ai";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkBreaks from 'remark-breaks';
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { useSidebar } from "@/hooks/use-sidebar";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -28,7 +29,7 @@ export default function MessageCard({ msg }: MessageCardProps) {
     >
       <div className={msg.role === "user" ? userStyles : assistantStyles}>
         <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
+          remarkPlugins={[remarkGfm, remarkBreaks]}
           components={{
             code({ node, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || "");
