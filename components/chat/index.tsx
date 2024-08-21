@@ -85,6 +85,7 @@ export default function Chat() {
             className="w-full p-2 pr-12 border border-gray-300 rounded"
             onKeyDown={handleKeyDown}
             placeholder="请输入内容，shift+回车换行，回车发送"
+            enterkeyhint="send"
           />
           <Button 
             onClick={handleButtonClick} 
