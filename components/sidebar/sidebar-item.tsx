@@ -1,33 +1,61 @@
+"use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import { ComponentType, SVGProps } from "react";
+import clsx from "clsx";
 
 interface SidebarItemProps {
   itemName: string;
   path: string;
-  onSelectItem: (item: string) => void;
-  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  Icon: ComponentType<SVGProps<SVGSVGElement>>;
+  isExpanded: boolean;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({
+const SidebarItem = ({
   itemName,
-  onSelectItem,
   path,
   Icon,
-}) => {
+  isExpanded,
+}: SidebarItemProps) => {
   const pathname = usePathname();
+  const isActive = pathname === path;
+
   return (
     <Link
-      key={path}
       href={path}
-      passHref
-      className={`flex items-center py-2.5 px-6 hover:bg-gray-200 ${
-        pathname === path ? "bg-gray-300" : ""
-      }`}
-      onClick={() => onSelectItem(path)}
+      className={clsx(
+        "flex items-center rounded-lg transition-all duration-300 ease-in-out overflow-hidden",
+        {
+          "bg-gray-100 text-gray-900": isActive,
+          "text-gray-600 hover:bg-gray-50 hover:text-gray-900": !isActive,
+          "px-4 py-3": isExpanded,
+          "px-2 py-3 justify-center w-12 mx-auto": !isExpanded,
+        }
+      )}
     >
-      <Icon className="w-5 h-5 mr-3" />
-      {itemName}
+      <Icon
+        className={clsx(
+          "flex-shrink-0 transition-all duration-300 ease-in-out",
+          {
+            "w-6 h-6 mr-4": isExpanded,
+            "w-6 h-6": !isExpanded,
+            "text-blue-500": isActive,
+            "text-gray-400": !isActive,
+          }
+        )}
+      />
+      <span
+        className={clsx(
+          "whitespace-nowrap transition-all duration-300 ease-in-out",
+          {
+            "opacity-100 w-auto": isExpanded,
+            "opacity-0 w-0": !isExpanded,
+          }
+        )}
+      >
+        {itemName}
+      </span>
     </Link>
   );
 };

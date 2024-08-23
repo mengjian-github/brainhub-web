@@ -1,7 +1,6 @@
 "use client";
 
-import SidebarItem from "./sidebar-item";
-import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
   MessageSquare,
   Search,
@@ -10,66 +9,72 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import Image from "next/image";
+import SidebarItem from "./sidebar-item";
+import clsx from "clsx";
 
-interface SidebarItemType {
-  path: string;
-  itemName: string;
-  Icon: React.ComponentType;
-}
-
-interface SidebarProps {
-  onSelectItem: (item: string) => void;
-  isOpen: boolean;
-  toggleSidebar: () => void;
-}
-
-const sidebarItems: SidebarItemType[] = [
+const SIDEBAR_ITEMS = [
   { path: "/main/chat", itemName: "聊天", Icon: MessageSquare },
   { path: "/main/search", itemName: "搜索", Icon: Search },
   { path: "/main/read", itemName: "阅读", Icon: BookOpen },
   { path: "/main/write", itemName: "写作", Icon: Edit },
-];
+] as const;
 
-const Sidebar: React.FC<SidebarProps> = ({
-  onSelectItem,
-  isOpen,
-  toggleSidebar,
-}) => {
+const Sidebar = () => {
+  const [isExpanded, setIsExpanded] = useState(true);
+
   return (
-    <div className="flex">
-      <div
-        className={`fixed inset-y-0 z-10 left-0 transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out bg-gray-100 text-gray-900 w-64`}
-      >
-        <div className="flex items-center justify-between p-6 pr-4">
-          <div className="flex items-center space-x-2">
-            <span className="text-xl font-bold">智脑</span>
-            <span>开启你的AI未来</span>
+    <aside
+      className={clsx(
+        "relative h-screen bg-white border-r border-gray-200 transition-all duration-300",
+        isExpanded ? "w-[260px]" : "w-[60px]"
+      )}
+    >
+      <div className="h-full flex flex-col pt-8">
+        <div className="flex items-center px-4 mb-8 transition-all duration-300 ease-in-out">
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={36}
+            height={36}
+            className="flex-shrink-0"
+          />
+          <div
+            className={clsx(
+              "ml-3 transition-all duration-300 ease-in-out",
+              isExpanded ? "opacity-100 w-auto" : "opacity-0 w-0"
+            )}
+          >
+            <h1 className="text-xl font-bold text-gray-800 whitespace-nowrap">
+              智脑
+            </h1>
+            <p className="text-xs text-gray-500 whitespace-nowrap">
+              开启你的AI未来
+            </p>
           </div>
-          <button onClick={toggleSidebar}>
-            <ChevronLeft className="w-6 h-6" />
-          </button>
         </div>
-        <nav>
-          {sidebarItems.map(({ path, itemName, Icon }: SidebarItemType) => (
+        <nav className="flex-1 overflow-y-auto">
+          {SIDEBAR_ITEMS.map(({ path, itemName, Icon }) => (
             <SidebarItem
               key={path}
               itemName={itemName}
               path={path}
-              onSelectItem={onSelectItem}
               Icon={Icon}
+              isExpanded={isExpanded}
             />
           ))}
         </nav>
       </div>
       <button
-        className={`fixed top-4 left-4 z-50 ${isOpen ? "hidden" : "block"}`}
-        onClick={toggleSidebar}
+        onClick={() => setIsExpanded((prev) => !prev)}
+        className={clsx(
+          "absolute top-9 transition-all duration-300 ease-in-out bg-white border border-gray-200 rounded-full p-1.5 shadow-md hover:bg-gray-100",
+          isExpanded ? "-right-4" : "right-1/2 transform translate-x-1/2"
+        )}
       >
-        <ChevronRight className="w-6 h-6" />
+        {isExpanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
       </button>
-    </div>
+    </aside>
   );
 };
 

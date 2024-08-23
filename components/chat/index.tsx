@@ -8,7 +8,6 @@ import useChat from "@/hooks/use-chat";
 import ModelSelector from "./model-selector";
 import MessageCard from "./message-card";
 import { Empty } from "./empty";
-import { useSidebar } from "@/hooks/use-sidebar";
 import useIsPC from "@/hooks/use-is-pc";
 import { Textarea } from "../ui/textarea";
 
@@ -32,7 +31,6 @@ export default function Chat() {
     handleButtonClick,
     inputRef,
   } = useChat();
-  const { isOpen } = useSidebar();
   const isPC = useIsPC();
 
   return (
@@ -64,12 +62,7 @@ export default function Chat() {
 
         <div ref={messagesEndRef} />
       </div>
-      <div
-        className="fixed-bottom"
-        style={{
-          width: isOpen && isPC ? "calc(100% - 18rem)" : "calc(100% - 2rem)",
-        }}
-      >
+      <div className="fixed-bottom">
         <div className="flex mb-2">
           <ModelSelector
             defaultValue={selectedModel}
@@ -87,9 +80,9 @@ export default function Chat() {
             placeholder="请输入内容，shift+回车换行，回车发送"
             enterkeyhint="send"
           />
-          <Button 
-            onClick={handleButtonClick} 
-            size="icon" 
+          <Button
+            onClick={handleButtonClick}
+            size="icon"
             variant="ghost"
             className="absolute bottom-0 right-0 hover:bg-transparent"
           >
