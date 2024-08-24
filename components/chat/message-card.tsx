@@ -1,5 +1,5 @@
 import { Message } from "ai";
-import React, { useState } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -12,12 +12,9 @@ interface MessageCardProps {
 }
 
 export default function MessageCard({ msg }: MessageCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
-
-  const commonStyles = "p-3 rounded-lg shadow-md prose max-w-full";
+  const commonStyles = "p-4 rounded-lg shadow-md max-w-full";
   const userStyles = `${commonStyles} bg-primary text-white ml-auto`;
-  const assistantStyles = `${commonStyles} bg-secondary text-gray-800 mr-auto`;
+  const assistantStyles = `${commonStyles} custom-markdown bg-secondary text-gray-800 mr-auto`;
 
   const images =
     msg.experimental_attachments
@@ -29,7 +26,9 @@ export default function MessageCard({ msg }: MessageCardProps) {
   return (
     <>
       <div className="flex flex-col my-4 max-w-full">
-        <div className={msg.role === "user" ? userStyles : assistantStyles}>
+        <div
+          className={`${msg.role === "user" ? userStyles : assistantStyles}`}
+        >
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkBreaks]}
             components={{

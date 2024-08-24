@@ -88,3 +88,37 @@ html {
 .overflow-y-auto {
   -webkit-overflow-scrolling: touch;
 }
+
+.custom-markdown {
+  @apply prose prose-sm sm:prose lg:prose-lg;
+}
+
+.custom-markdown p {
+  @apply my-2;
+}
+
+.custom-markdown ul,
+.custom-markdown ol {
+  @apply my-2 pl-6;
+}
+
+.custom-markdown li {
+  @apply my-1;
+}
+
+.custom-markdown h1,
+.custom-markdown h2,
+.custom-markdown h3,
+.custom-markdown h4,
+.custom-markdown h5,
+.custom-markdown h6 {
+  @apply mt-4 mb-2;
+}
+
+.custom-markdown pre {
+  @apply my-4;
+}
+
+.custom-markdown blockquote {
+  @apply my-4 pl-4 border-l-4 border-gray-300 italic;
+}
