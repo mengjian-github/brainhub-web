@@ -2,18 +2,12 @@
 
 import { LoaderIcon, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "../ui/textarea";
 import "./index.css";
 
 import useChat from "@/hooks/use-chat";
 import ModelSelector from "./model-selector";
 import MessageCard from "./message-card";
-import { Empty } from "./empty";
-import useIsPC from "@/hooks/use-is-pc";
-import { Textarea } from "../ui/textarea";
-
-function getInnerHeight() {
-  return window.innerHeight;
-}
 
 export default function Chat() {
   const {
@@ -31,65 +25,75 @@ export default function Chat() {
     handleButtonClick,
     inputRef,
   } = useChat();
-  const isPC = useIsPC();
 
   return (
-    <div className="h-full w-full">
-      <div className="chat-scroll-container overflow-y-auto">
+    <div className="h-full w-full flex flex-col">
+      <header className="p-4 border-b">
+        <h2 className="text-lg font-semibold">AI助手</h2>
+      </header>
+      <main className="flex-1 overflow-y-auto p-4">
         {messages.length === 0 ? (
-          <Empty />
+          <div className="text-center text-gray-500 mt-8">
+            <p>欢迎使用AI助手,请输入您的问题或需求。</p>
+          </div>
         ) : (
           messages.map((msg) => <MessageCard key={msg.id} msg={msg} />)
         )}
 
-        {isLoading && (
-          <div className="flex items-center space-x-2">
-            <LoaderIcon className="animate-spin" />
-            <Button variant="secondary" onClick={stop}>
-              终止
-            </Button>
-          </div>
-        )}
-
-        {error && (
-          <div className="flex items-center space-x-2">
-            <div>发生了一些错误。</div>
-            <Button variant="secondary" onClick={() => reload()}>
-              重试
-            </Button>
-          </div>
-        )}
+        {isLoading && <LoadingIndicator onStop={stop} />}
+        {error && <ErrorMessage onRetry={reload} />}
 
         <div ref={messagesEndRef} />
-      </div>
-      <div className="fixed-bottom">
-        <div className="flex mb-2">
-          <ModelSelector
-            defaultValue={selectedModel}
-            value={selectedModel}
-            onValueChange={handleModelChange}
-          />
-        </div>
-        <div className="relative flex-1">
+      </main>
+      <footer className="border-t p-4">
+        <ModelSelector
+          value={selectedModel}
+          onValueChange={handleModelChange}
+          className="mb-2 w-48"
+        />
+        <div className="relative">
           <Textarea
             ref={inputRef}
             value={input}
             onChange={handleInputChange}
-            className="w-full p-2 pr-12 border border-gray-300 rounded"
             onKeyDown={handleKeyDown}
-            placeholder="请输入内容，shift+回车换行，回车发送"
+            className="w-full pr-12 resize-none"
+            placeholder="输入您的问题 (Shift+Enter换行)"
+            rows={2}
             enterkeyhint="send"
           />
           <Button
             onClick={handleButtonClick}
             size="icon"
             variant="ghost"
-            className="absolute bottom-0 right-0 hover:bg-transparent"
+            className="absolute right-2 bottom-0"
           >
             <Send className="w-5 h-5" />
           </Button>
         </div>
-      </div>
+      </footer>
+    </div>
+  );
+}
+
+function LoadingIndicator({ onStop }: { onStop: () => void }) {
+  return (
+    <div className="flex items-center space-x-2">
+      <LoaderIcon className="animate-spin" />
+      <Button variant="secondary" onClick={onStop}>
+        终止
+      </Button>
+    </div>
+  );
+}
+
+function ErrorMessage({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="flex items-center space-x-2">
+      <div>发生了一些错误。</div>
+      <Button variant="secondary" onClick={onRetry}>
+        重试
+      </Button>
     </div>
   );
 }
