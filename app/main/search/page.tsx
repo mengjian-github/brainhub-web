@@ -4,13 +4,25 @@ import { useState } from "react";
 import Image from "next/image";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 export default function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("搜索内容:", searchQuery);
+  const handleSearch = (e?: React.FormEvent | React.KeyboardEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
+    if (searchQuery.trim()) {
+      router.push(`/main/search/detail?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch(e);
+    }
   };
 
   return (
@@ -19,10 +31,9 @@ export default function SearchPage() {
         <Image
           className="m-auto"
           src="/logo.png"
-          alt="Kimi Logo"
+          alt="Logo"
           width={150}
           height={60}
-          style={{ width: "auto", height: "auto" }}
         />
         <h1 className="text-2xl sm:text-3xl font-bold mt-4 text-gray-800">
           智脑AI搜索
@@ -38,6 +49,7 @@ export default function SearchPage() {
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="输入问题，探索无限可能"
             className="w-full px-4 py-2 sm:py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-300 text-base sm:text-lg"
           />
