@@ -3,20 +3,9 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { google } from "@ai-sdk/google";
 import { convertToCoreMessages, LanguageModel, streamText } from "ai";
 
-// Allow streaming responses up to 30 seconds
+// Force the route to be dynamic and allow streaming responses up to 30 seconds
+export const dynamic = "force-dynamic";
 export const maxDuration = 30;
-
-// const openai = createOpenAI({
-//   baseURL: process.env.OPENAI_BASE_URL,
-// });
-
-// const anthropic = createAnthropic({
-//   baseURL: process.env.ANTHROPIC_BASE_URL,
-// });
-
-// const google = createGoogleGenerativeAI({
-//   baseURL: process.env.GOOGLE_BASE_URL,
-// });
 
 type ModuleName =
   | "gpt-4o"
