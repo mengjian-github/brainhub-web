@@ -34,7 +34,8 @@
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "yet-another-react-lightbox": "^3.21.4"
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.2",
