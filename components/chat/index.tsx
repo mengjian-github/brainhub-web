@@ -26,7 +26,7 @@ export default function Chat() {
   } = useChat();
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full pb-20 lg:pb-0">
       <header className="flex-shrink-0 p-4 border-b">
         <h2 className="text-lg font-semibold">AI助手</h2>
       </header>
@@ -46,7 +46,7 @@ export default function Chat() {
         <ModelSelector
           value={selectedModel}
           onValueChange={handleModelChange}
-          className="mb-2 w-48"
+          className="mb-2 w-full lg:w-48"
         />
         <div className="relative">
           <Textarea
@@ -54,9 +54,9 @@ export default function Chat() {
             value={input}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            className="w-full pr-12 resize-none"
+            className="w-full pr-12 resize-none min-h-[40px]"
             placeholder="输入您的问题 (Shift+Enter换行)"
-            rows={2}
+            rows={1}
             enterkeyhint="send"
           />
           <Button

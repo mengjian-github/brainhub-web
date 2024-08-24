@@ -77,3 +77,14 @@ html {
   -moz-text-size-adjust: 100% !important;
   text-size-adjust: 100% !important;
 }
+
+@media (max-width: 640px) {
+  html,
+  body {
+    font-size: 14px;
+  }
+}
+
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+}

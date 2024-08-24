@@ -48,7 +48,7 @@ export default function ModelSelector({
   defaultValue,
   value,
   onValueChange,
-  className = "w-[180px]",
+  className = "w-full lg:w-[180px]",
 }: ModelSelectorProps) {
   return (
     <Select
