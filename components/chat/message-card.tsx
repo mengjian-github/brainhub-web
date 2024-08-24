@@ -2,9 +2,8 @@ import { Message } from "ai";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import remarkBreaks from 'remark-breaks';
+import remarkBreaks from "remark-breaks";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { useSidebar } from "@/hooks/use-sidebar";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface MessageCardProps {
@@ -12,7 +11,6 @@ interface MessageCardProps {
 }
 
 export default function MessageCard({ msg }: MessageCardProps) {
-  const { isOpen } = useSidebar();
   const userStyles =
     "p-3 bg-primary text-white rounded-lg shadow-md max-w-full prose";
   const assistantStyles =
@@ -23,9 +21,6 @@ export default function MessageCard({ msg }: MessageCardProps) {
       className={`flex ${
         msg.role === "user" ? "justify-end" : "justify-start"
       } my-4`}
-      style={{
-        maxWidth: isOpen ? "calc(100vw - 18rem)" : "calc(100vw - 2rem)",
-      }}
     >
       <div className={msg.role === "user" ? userStyles : assistantStyles}>
         <ReactMarkdown
