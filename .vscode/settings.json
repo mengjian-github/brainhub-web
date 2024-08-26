@@ -1,7 +1,4 @@
 {
-    "editor.formatOnSave": true,
-    "cSpell.words": [
-        "clsx",
-        "lucide"
-    ]
+  "editor.formatOnSave": true,
+  "cSpell.words": ["clsx", "lucide", "openai"]
 }
