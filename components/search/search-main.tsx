@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import SearchDetail from "@/components/search/search-detail";
 import { AIState, search } from "@/lib/search";
-import { readStreamableValue, StreamableValue } from "ai/rsc";
+import { readStreamableValue } from "ai/rsc";
 
 export default function SearchMain() {
   const [query, setQuery] = useState("");
@@ -35,7 +35,7 @@ export default function SearchMain() {
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-50 px-4 pt-8">
       {!hasSearchResult && (
-        <div className="mb-8 text-center">
+        <div className="mt-24 text-center">
           <Image
             className="m-auto mb-4"
             src="/logo.png"
@@ -46,6 +46,9 @@ export default function SearchMain() {
           <h1 className="text-2xl sm:text-3xl font-bold mt-2 text-gray-800">
             智脑AI搜索
           </h1>
+          <p className="text-lg text-gray-600 mt-2 mb-6">
+            智能搜索，为您提供精准答案
+          </p>
         </div>
       )}
 

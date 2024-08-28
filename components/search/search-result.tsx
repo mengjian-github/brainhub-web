@@ -11,7 +11,7 @@ export default function SearchResult({
   references,
 }: SearchResultProps) {
   return (
-    <div className="w-full p-6 max-h-[70vh] overflow-y-auto scrollbar-hide">
+    <div className="w-full max-h-[70vh] overflow-y-auto scrollbar-hide">
       <div className="mb-6">
         <div className="flex items-center mb-4">
           <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500 mr-2" />
@@ -19,7 +19,7 @@ export default function SearchResult({
             智能解答
           </h2>
         </div>
-        <div className="text-sm sm:text-base text-gray-600 leading-relaxed custom-markdown">
+        <div className="w-full text-sm sm:text-base text-gray-600 leading-relaxed custom-markdown">
           <Markdown>{answer}</Markdown>
         </div>
       </div>

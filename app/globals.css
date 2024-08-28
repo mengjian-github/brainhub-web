@@ -91,6 +91,7 @@ html {
 
 .custom-markdown {
   @apply prose prose-sm sm:prose lg:prose-lg;
+  max-width: 100%;
 }
 
 .custom-markdown p {
