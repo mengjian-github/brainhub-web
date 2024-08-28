@@ -1,6 +1,5 @@
-import { anthropic } from "@ai-sdk/anthropic";
-import { google } from "@ai-sdk/google";
-import { openai } from "@ai-sdk/openai";
+import { openrouter } from "@openrouter/ai-sdk-provider";
+
 import { LanguageModel } from "ai";
 
 export type ModuleName =
@@ -9,16 +8,19 @@ export type ModuleName =
   | "gemini-1.5-pro"
   | "gemini-1.5-flash"
   | "claude-3-haiku"
-  | "gpt-4o-mini";
+  | "gpt-4o-mini"
+  | "auto";
+
 export type SupportedAiModels = {
   [key in ModuleName]: LanguageModel;
 };
 
 export const SUPPORTED_AI_MODELS: SupportedAiModels = {
-  "gpt-4o": openai("gpt-4o"),
-  "gpt-4o-mini": openai("gpt-4o-mini"),
-  "claude-3-5-sonnet": anthropic("claude-3-5-sonnet-20240620"),
-  "claude-3-haiku": anthropic("claude-3-haiku-20240307"),
-  "gemini-1.5-pro": google("models/gemini-1.5-pro-latest"),
-  "gemini-1.5-flash": google("models/gemini-1.5-flash-latest"),
+  "gpt-4o": openrouter("openai/gpt-4o"),
+  "gpt-4o-mini": openrouter("openai/gpt-4o-mini"),
+  "claude-3-5-sonnet": openrouter("anthropic/claude-3.5-sonnet"),
+  "claude-3-haiku": openrouter("anthropic/claude-3-haiku"),
+  "gemini-1.5-pro": openrouter("google/gemini-pro-1.5"),
+  "gemini-1.5-flash": openrouter("google/gemini-flash-1.5"),
+  auto: openrouter("openrouter/auto"),
 };
