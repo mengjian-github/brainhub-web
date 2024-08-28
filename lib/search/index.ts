@@ -4,6 +4,7 @@ import { searchIntentAgent } from "@/lib/search/agents/intent";
 import { searchAgent } from "./agents/search";
 import { answerAgent } from "./agents/answer";
 import { createStreamableValue } from "ai/rsc";
+import { ModuleName } from "../model";
 
 export type AIState = {
   query: string;
@@ -12,7 +13,7 @@ export type AIState = {
   searchResults: any[];
 };
 
-export async function search(query: string) {
+export async function search(query: string, model: ModuleName) {
   const initialState: AIState = {
     query,
     currentStep: 0,
@@ -27,7 +28,7 @@ export async function search(query: string) {
   }
 
   async function processAnswer(searchResults: any[] = []) {
-    const answer = await answerAgent(query, searchResults);
+    const answer = await answerAgent(query, searchResults, model);
     let result = "";
     for await (const textPart of answer.textStream) {
       result += textPart;
@@ -39,7 +40,7 @@ export async function search(query: string) {
   }
 
   async function process() {
-    const intent = await searchIntentAgent(query);
+    const intent = await searchIntentAgent(query, model);
     console.log(
       "Search intent recognition result:",
       JSON.stringify(intent, null, 2)
@@ -51,7 +52,7 @@ export async function search(query: string) {
       return processAnswer();
     }
 
-    const searchResult = await searchAgent(intent);
+    const searchResult = await searchAgent(intent, model);
     const filterSearchResults = searchResult.filter(
       (result) => result.toolName === "searchTool"
     );

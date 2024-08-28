@@ -7,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ModuleName } from "@/lib/model";
 
 interface Model {
   value: string;
@@ -65,7 +66,7 @@ const MODEL_GROUPS: ModelGroup[] = [
 interface ModelSelectorProps {
   defaultValue?: string;
   value: string;
-  onValueChange: (value: string) => void;
+  onValueChange: (value: ModuleName) => void;
   className?: string;
 }
 

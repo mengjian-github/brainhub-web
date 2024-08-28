@@ -1,10 +1,14 @@
 import { streamText } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { ModuleName, SUPPORTED_AI_MODELS } from "@/lib/model";
 
-export async function answerAgent(query: string, searchResult: any) {
+export async function answerAgent(
+  query: string,
+  searchResult: any,
+  model: ModuleName
+) {
   try {
     const stream = await streamText({
-      model: anthropic("claude-3-sonnet-20240229"),
+      model: SUPPORTED_AI_MODELS[model],
       prompt: `
       You are a professional search query assistant. Generate a relevant answer based on the following user query and search results.
 

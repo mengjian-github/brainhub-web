@@ -1,5 +1,5 @@
 import { generateObject } from "ai";
-import { anthropic } from "@ai-sdk/anthropic";
+import { ModuleName, SUPPORTED_AI_MODELS } from "@/lib/model";
 import { z } from "zod";
 
 const searchIntentSchema = z.object({
@@ -15,10 +15,10 @@ const searchIntentSchema = z.object({
   extractedLinks: z.array(z.string()).optional(),
 });
 
-export async function searchIntentAgent(userInput: string) {
+export async function searchIntentAgent(userInput: string, model: ModuleName) {
   try {
     const { object } = await generateObject({
-      model: anthropic("claude-3-sonnet-20240229"),
+      model: SUPPORTED_AI_MODELS[model],
       schema: searchIntentSchema,
       prompt: `
       Analyze the following user input, determine if it's in English, and decide if a search engine query is needed. If so, rewrite it as a suitable search question.

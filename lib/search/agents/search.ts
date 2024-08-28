@@ -1,18 +1,21 @@
 import { generateText } from "ai";
 import { retrieveTool } from "../tools/retieve";
 import { searchTool } from "../tools/search";
-import { anthropic } from "@ai-sdk/anthropic";
+import { ModuleName, SUPPORTED_AI_MODELS } from "@/lib/model";
 
-export async function searchAgent(input: {
-  originalQuery: string;
-  needsSearch: boolean;
-  isEnglish: boolean;
-  searchQuery?: {
-    original: string;
-    english?: string;
-  };
-  extractedLinks?: string[];
-}) {
+export async function searchAgent(
+  input: {
+    originalQuery: string;
+    needsSearch: boolean;
+    isEnglish: boolean;
+    searchQuery?: {
+      original: string;
+      english?: string;
+    };
+    extractedLinks?: string[];
+  },
+  model: ModuleName
+) {
   if (!input.needsSearch) {
     return [];
   }
@@ -40,7 +43,7 @@ Please note:
 `;
 
   const { toolResults } = await generateText({
-    model: anthropic("claude-3-sonnet-20240229"),
+    model: SUPPORTED_AI_MODELS[model],
     prompt: prompt,
     tools: { retrieveTool, searchTool },
   });
