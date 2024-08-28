@@ -1,11 +1,13 @@
 import { z } from "zod";
+import { tool } from "ai";
 
-export const retrieveTool = {
+export const retrieveTool = tool({
   description: "Retrieve content from the web",
   parameters: z.object({
-    url: z.string().describe("要检索的URL"),
+    url: z.string().describe("url to retrieve content from"),
   }),
   execute: async ({ url }: { url: string }) => {
+    console.log("Retrieving content from:", url);
     let results:
       | {
           results: { title: string; content: string; url: string }[];
@@ -45,4 +47,4 @@ export const retrieveTool = {
     }
     return results;
   },
-};
+});

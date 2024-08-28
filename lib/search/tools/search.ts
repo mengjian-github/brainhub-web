@@ -1,9 +1,11 @@
+import { tool } from "ai";
 import { z } from "zod";
 
 type SearchResultItem = {
   title: string;
   url: string;
   content: string;
+  score: number;
 };
 
 type SearchResultImage =
@@ -41,7 +43,7 @@ const searchSchema = z.object({
     ),
 });
 
-export const searchTool = {
+export const searchTool = tool({
   description: "Search the web for information",
   parameters: searchSchema,
   execute: async ({
@@ -76,7 +78,7 @@ export const searchTool = {
 
     return searchResult;
   },
-};
+});
 
 async function tavilySearch(
   query: string,
