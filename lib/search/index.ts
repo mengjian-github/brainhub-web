@@ -34,21 +34,15 @@ export async function search(query: string, model: ModuleName) {
       result += textPart;
       await updateState({ answer: result, currentStep: 3 });
     }
-    console.log("answer:", result);
     stream.done(initialState);
     return answer;
   }
 
   async function process() {
     const intent = await searchIntentAgent(query, model);
-    console.log(
-      "Search intent recognition result:",
-      JSON.stringify(intent, null, 2)
-    );
     await updateState({ currentStep: 1 });
 
     if (!intent.needsSearch) {
-      console.log("No search needed");
       return processAnswer();
     }
 
