@@ -7,7 +7,6 @@ export const retrieveTool = tool({
     url: z.string().describe("url to retrieve content from"),
   }),
   execute: async ({ url }: { url: string }) => {
-    console.log("Retrieving content from:", url);
     let results:
       | {
           results: { title: string; content: string; url: string }[];
