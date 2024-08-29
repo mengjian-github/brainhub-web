@@ -1,32 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Image from "next/image";
-import { Search } from "lucide-react";
+import { Search, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import SearchDetail from "@/components/search/search-detail";
 import { AIState, search } from "@/lib/search";
 import { readStreamableValue } from "ai/rsc";
 
+// 定义搜索状态的类型
+type SearchStatus =
+  | "idle"
+  | "searching"
+  | "searchStreamStart"
+  | "completed"
+  | "error";
+
 export default function SearchMain() {
   const [query, setQuery] = useState("");
   const [aiState, setAIState] = useState<AIState>();
-  const [hasSearchResult, setHasSearchResult] = useState(false);
+  const [searchStatus, setSearchStatus] = useState<SearchStatus>("idle");
 
-  const handleSearch = async (e?: React.FormEvent<HTMLFormElement>) => {
-    if (e) {
-      e.preventDefault();
-    }
+  const handleSearch = useCallback(
+    async (e?: React.FormEvent<HTMLFormElement>) => {
+      e?.preventDefault();
 
-    if (query.trim()) {
-      const aiState = await search(query, "claude-3-5-sonnet");
-      setHasSearchResult(true);
+      if (!query.trim()) return;
 
-      for await (const state of readStreamableValue(aiState)) {
-        setAIState(state);
+      setSearchStatus("searching");
+
+      try {
+        const aiState = await search(query, "claude-3-5-sonnet");
+        setSearchStatus("searchStreamStart");
+
+        for await (const state of readStreamableValue(aiState)) {
+          setAIState(state);
+        }
+        setSearchStatus("completed");
+      } catch (error) {
+        console.error("搜索出错:", error);
+        setSearchStatus("error");
+        // 这里可以添加更多错误处理逻辑
       }
-    }
-  };
+    },
+    [query]
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -34,7 +52,7 @@ export default function SearchMain() {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gray-50 px-4 pt-8">
-      {!hasSearchResult && (
+      {searchStatus === "idle" && (
         <div className="mt-24 text-center">
           <Image
             className="m-auto mb-4"
@@ -54,7 +72,9 @@ export default function SearchMain() {
 
       <form
         onSubmit={handleSearch}
-        className={`w-full max-w-[80%] ${hasSearchResult ? "mb-8" : "mt-4"}`}
+        className={`w-full max-w-[80%] ${
+          searchStatus !== "idle" ? "mb-8" : "mt-4"
+        }`}
       >
         <div className="relative flex items-center">
           <Input
@@ -73,11 +93,24 @@ export default function SearchMain() {
         </div>
       </form>
 
-      {aiState && (
-        <div className="w-full max-w-[80%]">
-          <SearchDetail aiState={aiState} />
-        </div>
-      )}
+      <div className="w-full max-w-[80%] transition-all duration-300 ease-in-out">
+        {searchStatus === "searching" && (
+          <div className="flex justify-center items-center h-32 animate-fade-in">
+            <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+          </div>
+        )}
+        {["searchStreamStart", "completed"].includes(searchStatus) &&
+          aiState && (
+            <div className="animate-fade-in">
+              <SearchDetail aiState={aiState} />
+            </div>
+          )}
+        {searchStatus === "error" && (
+          <div className="text-red-500 text-center">
+            搜索时发生错误,请稍后重试。
+          </div>
+        )}
+      </div>
     </div>
   );
 }
