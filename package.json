@@ -36,6 +36,7 @@
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "vditor": "^3.10.5",
     "yet-another-react-lightbox": "^3.21.4"
   },
   "devDependencies": {
