@@ -4,13 +4,11 @@ import Editor, { EditorRef } from "@/components/write/editor";
 import DistributionModal from "@/components/write/distribution-modal";
 import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
 
 export default function Write() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState({ markdown: "", html: "" });
   const editorRef = useRef<EditorRef>(null);
-  const { toast } = useToast();
 
   const handleDistribute = () => {
     if (editorRef.current) {
@@ -19,14 +17,6 @@ export default function Write() {
       setContent({ markdown, html });
       setIsModalOpen(true);
     }
-  };
-
-  const showToast = (message: string, type: "success" | "error") => {
-    toast({
-      title: type === "success" ? "成功" : "错误",
-      description: message,
-      variant: type === "success" ? "default" : "destructive",
-    });
   };
 
   return (
@@ -43,7 +33,6 @@ export default function Write() {
               isOpen={isModalOpen}
               onClose={() => setIsModalOpen(false)}
               content={content}
-              showToast={showToast}
             />
           </div>
         </div>
