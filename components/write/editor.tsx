@@ -1,11 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useImperativeHandle, forwardRef } from "react";
 import Vditor from "vditor";
 import "vditor/dist/index.css";
 
-export default function Editor() {
+// 修改接口定义
+export interface EditorRef {
+  getHtml: () => string;
+  getMarkdown: () => string; // 将 getValue 改为 getMarkdown
+}
+
+const Editor = forwardRef<EditorRef>((props, ref) => {
   const [vd, setVd] = useState<Vditor>();
+
+  // 使用 useImperativeHandle 暴露方法给外部
+  useImperativeHandle(ref, () => ({
+    getHtml: () => vd?.getHTML() || "",
+    getMarkdown: () => vd?.getValue() || "", // 将 getValue 改为 getMarkdown
+  }));
+
   useEffect(() => {
     const vditor = new Vditor("vditor", {
       placeholder: "请输入内容",
@@ -60,11 +73,17 @@ export default function Editor() {
         "fullscreen",
       ],
     });
-    // Clear the effect
+
+    // 清理效果
     return () => {
       vd?.destroy();
       setVd(undefined);
     };
   }, []);
+
   return <div id="vditor" className="vditor" />;
-}
+});
+
+Editor.displayName = "Editor";
+
+export default Editor;
