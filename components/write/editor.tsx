@@ -81,7 +81,13 @@ const Editor = forwardRef<EditorRef>((props, ref) => {
     };
   }, []);
 
-  return <div id="vditor" className="vditor" />;
+  return (
+    <div
+      id="vditor"
+      className="vditor"
+      style={{ height: "calc(100vh - 100px)" }}
+    ></div>
+  );
 });
 
 Editor.displayName = "Editor";

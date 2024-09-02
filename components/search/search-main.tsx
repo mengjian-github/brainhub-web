@@ -30,7 +30,7 @@ export default function SearchMain() {
       setSearchStatus("searching");
 
       try {
-        const aiState = await search(query, "claude-3-5-sonnet");
+        const aiState = await search(query, "gpt-4o");
         setSearchStatus("searchStreamStart");
 
         for await (const state of readStreamableValue(aiState)) {

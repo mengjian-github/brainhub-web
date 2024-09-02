@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import SidebarItem from "./sidebar-item";
 import clsx from "clsx";
+import User from "../user"; // 导入 User 组件
 
 const SIDEBAR_ITEMS = [
   { path: "/main/chat", itemName: "聊天", Icon: MessageSquare },
@@ -37,6 +38,9 @@ const Sidebar = () => {
             />
           ))}
         </nav>
+        <div className="flex justify-center py-4">
+          <User isExpanded={false} /> {/* 添加 User 组件 */}
+        </div>
       </aside>
       <aside
         className={`hidden lg:block relative h-screen bg-white border-r border-gray-200 transition-all duration-300 ${
@@ -77,6 +81,9 @@ const Sidebar = () => {
               />
             ))}
           </nav>
+          <div className="px-4 py-4">
+            <User isExpanded={isExpanded} /> {/* 添加 User 组件 */}
+          </div>
         </div>
         <button
           onClick={() => setIsExpanded((prev) => !prev)}
