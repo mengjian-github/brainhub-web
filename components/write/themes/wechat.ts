@@ -75,6 +75,48 @@ const wechatThemes: PlatformThemes = {
       `,
     },
     {
+      name: "海洋蓝",
+      style: `
+        body { color: #2c3e50; font-size: 16px; line-height: 1.6; }
+        h1, h2, h3, h4, h5, h6 { margin-top: 1.2em; margin-bottom: 0.6em; line-height: 1.35; color: #2980b9; }
+        h1 { font-size: 1.8em; } h2 { font-size: 1.6em; } h3 { font-size: 1.4em; }
+        p { margin-bottom: 1em; }
+        a { color: #2980b9; text-decoration: none; }
+        img { max-width: 100%; height: auto; border-radius: 4px; }
+        blockquote { padding: 15px; border-left: 3px solid #2980b9; color: #2980b9; }
+        code { padding: 2px 4px; border-radius: 3px; font-size: 0.9em; color: #2980b9; }
+        pre { padding: 1em; overflow-x: auto; }
+      `,
+    },
+    {
+      name: "樱花粉",
+      style: `
+        body { color: #5a5a5a; font-size: 16px; line-height: 1.6; }
+        h1, h2, h3, h4, h5, h6 { margin-top: 1.2em; margin-bottom: 0.6em; line-height: 1.35; color: #ff69b4; }
+        h1 { font-size: 1.8em; } h2 { font-size: 1.6em; } h3 { font-size: 1.4em; }
+        p { margin-bottom: 1em; }
+        a { color: #ff69b4; text-decoration: none; }
+        img { max-width: 100%; height: auto; border-radius: 4px; }
+        blockquote { padding: 15px; border-left: 3px solid #ff69b4; color: #ff69b4; }
+        code { padding: 2px 4px; border-radius: 3px; font-size: 0.9em; color: #ff69b4; }
+        pre { padding: 1em; overflow-x: auto; }
+      `,
+    },
+    {
+      name: "森林绿",
+      style: `
+        body { color: #2e7d32; background: url('https://example.com/forest.jpg') no-repeat center center fixed; background-size: cover; font-size: 16px; line-height: 1.6; }
+        h1, h2, h3, h4, h5, h6 { margin-top: 1.2em; margin-bottom: 0.6em; line-height: 1.35; color: #1b5e20; }
+        h1 { font-size: 1.8em; } h2 { font-size: 1.6em; } h3 { font-size: 1.4em; }
+        p { margin-bottom: 1em; }
+        a { color: #1b5e20; text-decoration: none; }
+        img { max-width: 100%; height: auto; border-radius: 4px; }
+        blockquote { padding: 15px; border-left: 3px solid #1b5e20; color: #1b5e20; }
+        code { padding: 2px 4px; border-radius: 3px; font-size: 0.9em; color: #1b5e20; }
+        pre { padding: 1em; overflow-x: auto; }
+      `,
+    },
+    {
       name: "极简黑白",
       style: `
         body { color: #000; font-size: 16px; line-height: 1.6; }
@@ -129,6 +171,21 @@ const wechatThemes: PlatformThemes = {
         blockquote { padding: 15px; border-left: 3px solid #ffb6c1; color: #8e4585; }
         code { padding: 2px 4px; border-radius: 3px; font-size: 0.9em; color: #db7093; }
         pre { padding: 1em; overflow-x: auto; border-radius: 8px; }
+      `,
+    },
+
+    {
+      name: "复古纸张",
+      style: `
+        body { color: #5d4037; background: url('https://example.com/vintage-paper.jpg') no-repeat center center fixed; background-size: cover; font-size: 16px; line-height: 1.6; }
+        h1, h2, h3, h4, h5, h6 { margin-top: 1.2em; margin-bottom: 0.6em; line-height: 1.35; color: #3e2723; }
+        h1 { font-size: 1.8em; } h2 { font-size: 1.6em; } h3 { font-size: 1.4em; }
+        p { margin-bottom: 1em; }
+        a { color: #3e2723; text-decoration: none; }
+        img { max-width: 100%; height: auto; border-radius: 4px; }
+        blockquote { padding: 15px; border-left: 3px solid #3e2723; color: #3e2723; }
+        code { padding: 2px 4px; border-radius: 3px; font-size: 0.9em; color: #3e2723; }
+        pre { padding: 1em; overflow-x: auto; }
       `,
     },
   ],

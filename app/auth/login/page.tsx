@@ -1,18 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useRouter, useSearchParams } from "next/navigation"; // 新增
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/auth-context";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const supabase = createClient();
-  const router = useRouter(); // 新增
-  const searchParams = useSearchParams(); // 新增
+  const { signIn } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? "/";
 
   useEffect(() => {
@@ -23,16 +23,11 @@ export default function Login() {
   }, [searchParams]);
 
   const handleLogin = async () => {
-    const { error, data } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) {
+    try {
+      await signIn(email, password, redirectTo);
+      router.push(redirectTo);
+    } catch (error: any) {
       setError(error.message);
-    } else if (!data.user?.email_confirmed_at) {
-      setError("邮箱未验证，请检查您的邮箱。");
-    } else {
-      router.push(redirectTo); // 登录成功后跳转到指定页面
     }
   };
 

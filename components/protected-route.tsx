@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { LoaderIcon } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/auth-context";
 
 interface ProtectedRouteProps {
   children: ReactNode;

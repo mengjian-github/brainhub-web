@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/auth-context";
 import { useRouter } from "next/navigation";
 import { CircleUserRound } from "lucide-react";
 
 export default function User({ isExpanded }: { isExpanded: boolean }) {
-  const { user, signOut, loading } = useAuth(); // 从 useAuth 中获取 loading 状态
+  const { user, signOut, loading } = useAuth();
   const router = useRouter();
 
   if (loading) {

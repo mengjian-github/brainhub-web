@@ -8,6 +8,7 @@ import "vditor/dist/index.css";
 export interface EditorRef {
   getHtml: () => string;
   getMarkdown: () => string; // 将 getValue 改为 getMarkdown
+  setMarkdown: (markdown: string) => void; // 新增方法
 }
 
 const Editor = forwardRef<EditorRef>((props, ref) => {
@@ -17,6 +18,11 @@ const Editor = forwardRef<EditorRef>((props, ref) => {
   useImperativeHandle(ref, () => ({
     getHtml: () => vd?.getHTML() || "",
     getMarkdown: () => vd?.getValue() || "", // 将 getValue 改为 getMarkdown
+    setMarkdown: (markdown: string) => {
+      if (vd) {
+        vd.setValue(markdown); // 新增方法实现
+      }
+    },
   }));
 
   useEffect(() => {
