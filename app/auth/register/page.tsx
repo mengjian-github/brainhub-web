@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation"; // 新增
 import { toast } from "react-hot-toast"; // 新增
+import { Suspense } from "react";
 
-export default function Register() {
+// 新组件用于处理 useSearchParams
+function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -57,5 +59,13 @@ export default function Register() {
         </Button>
       </div>
     </div>
+  );
+}
+
+export default function Register() {
+  return (
+    <Suspense fallback={<div>加载中...</div>}>
+      <RegisterForm />
+    </Suspense>
   );
 }
