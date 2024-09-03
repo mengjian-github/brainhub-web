@@ -43,7 +43,6 @@ const Editor = forwardRef<EditorRef, EditorProps>(({ onChange }, ref) => {
       },
       after: () => {
         vditor.clearCache();
-        vditor.setValue("");
         setVd(vditor);
       },
       input: (value) => {
