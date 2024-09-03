@@ -6,11 +6,11 @@ import ArticleList from "@/components/write/article-list"; // 新增导入
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import ProtectedRoute from "@/components/protected-route";
-import { updateArticle, fetchArticle } from "@/lib/supabase/articles"; // 导入Supabase方法
 import debounce from "lodash/debounce";
-import toast from "react-hot-toast";
 import AIChatSidebar from "@/components/write/ai-chat-sidebar"; // 新增导入
 import { ChevronLeft, ChevronRight } from "lucide-react"; // 新增导入
+import { useArticles } from "@/hooks/use-articles";
+import { Loader2 } from "lucide-react"; // 导入 Loader2 图标
 
 interface Article {
   id: number;
@@ -19,43 +19,42 @@ interface Article {
 }
 
 export default function Write() {
+  const {
+    articles,
+    selectedArticleId,
+    addNewArticle,
+    updateArticleContent,
+    updateArticleTitle,
+    deleteArticleById,
+    selectArticle,
+    getSelectedArticle,
+    updateLocalArticleContent, // 新增：用于更新本地文章内容
+    isLoading, // 新增：从 useArticles 中获取加载状态
+  } = useArticles();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState({ markdown: "", html: "" });
-  const [articles, setArticles] = useState<Article[]>([]); // 新增状态
-  const [selectedArticleId, setSelectedArticleId] = useState<number | null>(
-    null
-  ); // 新增状态
   const editorRef = useRef<EditorRef>(null);
-  const [saveStatus, setSaveStatus] = useState<
-    "保存中" | "已保存" | "保存失败"
-  >("已保存");
+
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isAIChatOpen, setIsAIChatOpen] = useState(false); // 新增状态
+  const [isEditorReady, setIsEditorReady] = useState(false);
+  const [editorContent, setEditorContent] = useState(""); // 新增：用于存储编辑器内容
 
-  const saveContent = useCallback(async (id: number, markdown: string) => {
-    setSaveStatus("保存中");
-    try {
-      await updateArticle(id, { markdown });
-      setSaveStatus("已保存");
-      setHasUnsavedChanges(false);
-    } catch (error) {
-      console.error("保存失败:", error);
-      setSaveStatus("保存失败");
-    }
-  }, []);
+  const debouncedSave = debounce((id: number, content: string) => {
+    updateArticleContent(id, content);
+  }, 1000);
 
-  const debouncedSave = debounce(saveContent, 1000);
-
+  // 新增：监听 selectedArticleId 的变化
   useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (hasUnsavedChanges) {
-        e.preventDefault();
+    if (selectedArticleId && isEditorReady) {
+      const selectedArticle = getSelectedArticle();
+      if (selectedArticle) {
+        setEditorContent(selectedArticle.markdown);
       }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-  }, [hasUnsavedChanges]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedArticleId, isEditorReady]);
 
   const handleDistribute = () => {
     if (editorRef.current) {
@@ -66,43 +65,25 @@ export default function Write() {
     }
   };
 
-  const handleArticleSelect = async (article: Article) => {
-    try {
-      // 在切换文章之前,保存当前文章
-      if (selectedArticleId && editorRef.current) {
-        const currentMarkdown = editorRef.current.getMarkdown();
-        await updateArticle(selectedArticleId, { markdown: currentMarkdown });
-      }
-
-      // 获取最新的文章数据
-      const updatedArticle = await fetchArticle(article.id);
-
-      if (editorRef.current) {
-        editorRef.current.setMarkdown(updatedArticle.markdown);
-      }
-      setSelectedArticleId(updatedArticle.id);
-
-      // 更新文章列表中的对应文章
-      setArticles((prevArticles) =>
-        prevArticles.map((a) =>
-          a.id === updatedArticle.id ? updatedArticle : a
-        )
-      );
-
-      setHasUnsavedChanges(false); // 重置未保存更改状态
-      setSaveStatus("已保存"); // 更新保存状态
-    } catch (error) {
-      console.error("切换文章失败:", error);
-      toast.error("切换文章失败,请稍后重试");
-    }
+  const handleArticleSelect = (article: Article) => {
+    selectArticle(article.id);
   };
 
   const handleEditorChange = (value: string) => {
     setHasUnsavedChanges(true);
     if (selectedArticleId) {
-      debouncedSave(selectedArticleId, value);
+      updateLocalArticleContent(selectedArticleId, value); // 立即更新本地状态
+      debouncedSave(selectedArticleId, value); // debounce 保存到云端
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <ProtectedRoute redirectTo="/auth/login?redirectTo=/main/write">
@@ -110,7 +91,9 @@ export default function Write() {
         <ArticleList
           articles={articles}
           onSelect={handleArticleSelect}
-          setArticles={setArticles}
+          onAddArticle={addNewArticle}
+          onDeleteArticle={deleteArticleById}
+          onUpdateTitle={updateArticleTitle}
           selectedArticleId={selectedArticleId}
         />
         <main
@@ -123,7 +106,6 @@ export default function Write() {
               <div className="p-4 border-b flex justify-between items-center">
                 <h2 className="text-2xl font-semibold">智脑写作</h2>
                 <div className="flex items-center space-x-4">
-                  <span className="text-sm text-gray-500">{saveStatus}</span>
                   <Button
                     onClick={handleDistribute}
                     disabled={!selectedArticleId}
@@ -132,12 +114,18 @@ export default function Write() {
                   </Button>
                 </div>
               </div>
-              {selectedArticleId ? (
-                <Editor ref={editorRef} onChange={handleEditorChange} />
+              {articles.length > 0 ? (
+                <Editor
+                  ref={editorRef}
+                  onChange={handleEditorChange}
+                  onReady={() => setIsEditorReady(true)}
+                  initialContent={editorContent} // 新增：传递初始内容
+                  key={selectedArticleId} // 添加这一行
+                />
               ) : (
                 <div className="p-8 text-center">
                   <p className="text-lg text-gray-600 mb-4">
-                    请选择一篇文章或创建新文章以开始编辑
+                    请选择一篇文或创建新文章以开始编辑
                   </p>
                 </div>
               )}

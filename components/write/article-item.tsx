@@ -6,6 +6,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover"; // 导入shadcn的Popover组件
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 
 interface Article {
   id: number;
@@ -20,7 +21,7 @@ interface ArticleItemProps {
   selectedArticleId: number | null;
   onSelect: (article: Article) => void;
   onEdit: (id: number | null) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: number) => Promise<void>;
   onTitleBlur: (id: number, title: string) => void;
   onPopoverChange: (id: number | null) => void;
   onTitleChange: (id: number, title: string) => void;
@@ -38,6 +39,21 @@ export default function ArticleItem({
   onPopoverChange,
   onTitleChange,
 }: ArticleItemProps) {
+  const [localTitle, setLocalTitle] = useState(article.title);
+
+  useEffect(() => {
+    setLocalTitle(article.title);
+  }, [article.title]);
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalTitle(e.target.value);
+    onTitleChange(article.id, e.target.value);
+  };
+
+  const handleTitleBlur = () => {
+    onTitleBlur(article.id, localTitle);
+  };
+
   return (
     <li
       className={`flex justify-between items-center p-3 cursor-pointer rounded-lg border ${
@@ -48,13 +64,13 @@ export default function ArticleItem({
       onClick={() => onSelect(article)} // 将点击事件绑定到整个列表项
     >
       {isEditing === article.id ? (
-        <Input
+        <input
           type="text"
-          value={article.title}
-          onBlur={(e) => onTitleBlur(article.id, e.target.value)}
-          className="flex-1"
+          value={localTitle}
+          onChange={handleTitleChange}
+          onBlur={handleTitleBlur}
           autoFocus
-          onChange={(e) => onTitleChange(article.id, e.target.value)}
+          className="flex-1 w-full p-1 border rounded"
         />
       ) : (
         <span className="flex-1 text-gray-800 mr-2">{article.title}</span>
