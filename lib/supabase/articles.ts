@@ -31,18 +31,32 @@ export async function addArticle(
 export async function updateArticle(
   id: number,
   updates: Partial<Article>
-): Promise<Article[]> {
+): Promise<Article> {
+  // 执行更新操作
   const { data, error } = await supabase
     .from("articles")
     .update(updates)
     .eq("id", id);
-  if (error) throw new Error(`Error updating article: ${error.message}`);
-  console.log("Article updated successfully", data);
-  return data as unknown as Article[];
+
+  if (error) throw new Error(`更新文章失败: ${error.message}`);
+
+  console.log("文章更新成功", id, updates);
+  return data as unknown as Article;
 }
 
 export async function deleteArticle(id: number): Promise<Article[]> {
   const { data, error } = await supabase.from("articles").delete().eq("id", id);
   if (error) throw new Error(`Error deleting article: ${error.message}`);
   return data as unknown as Article[];
+}
+
+export async function fetchArticle(id: number): Promise<Article> {
+  const { data, error } = await supabase
+    .from("articles")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) throw new Error(`获取文章失败: ${error.message}`);
+  return data as Article;
 }

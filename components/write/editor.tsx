@@ -11,25 +11,43 @@ export interface EditorRef {
   setMarkdown: (markdown: string) => void; // 新增方法
 }
 
-const Editor = forwardRef<EditorRef>((props, ref) => {
+interface EditorProps {
+  onChange?: (value: string) => void;
+}
+
+const Editor = forwardRef<EditorRef, EditorProps>(({ onChange }, ref) => {
   const [vd, setVd] = useState<Vditor>();
 
   // 使用 useImperativeHandle 暴露方法给外部
   useImperativeHandle(ref, () => ({
     getHtml: () => vd?.getHTML() || "",
-    getMarkdown: () => vd?.getValue() || "", // 将 getValue 改为 getMarkdown
+    getMarkdown: () => {
+      const value = vd?.getValue() || "";
+      console.log("getMarkdown", value);
+      return value === "" ? "" : value;
+    },
     setMarkdown: (markdown: string) => {
       if (vd) {
-        vd.setValue(markdown); // 新增方法实现
+        console.log("setMarkdown", markdown);
+        vd.setValue(markdown, true); // 新增方法实现
       }
     },
   }));
 
   useEffect(() => {
+    console.log("useEffect");
     const vditor = new Vditor("vditor", {
       placeholder: "请输入内容",
+      cache: {
+        enable: false,
+      },
       after: () => {
+        vditor.clearCache();
+        vditor.setValue("");
         setVd(vditor);
+      },
+      input: (value) => {
+        onChange && onChange(value);
       },
       mode: "wysiwyg",
       icon: "material",
@@ -44,6 +62,7 @@ const Editor = forwardRef<EditorRef>((props, ref) => {
           lineNumber: true,
         },
       },
+      value: "",
       toolbar: [
         "emoji",
         "headings",
