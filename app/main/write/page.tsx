@@ -6,7 +6,6 @@ import ArticleList from "@/components/write/article-list"; // 新增导入
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import ProtectedRoute from "@/components/protected-route";
-import debounce from "lodash/debounce";
 import AIChatSidebar from "@/components/write/ai-chat-sidebar"; // 新增导入
 import { ChevronLeft, ChevronRight } from "lucide-react"; // 新增导入
 import { useArticles } from "@/hooks/use-articles";
@@ -23,27 +22,22 @@ export default function Write() {
     articles,
     selectedArticleId,
     addNewArticle,
-    updateArticleContent,
     updateArticleTitle,
     deleteArticleById,
     selectArticle,
     getSelectedArticle,
     updateLocalArticleContent, // 新增：用于更新本地文章内容
     isLoading, // 新增：从 useArticles 中获取加载状态
+    debouncedSave,
   } = useArticles();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [content, setContent] = useState({ markdown: "", html: "" });
   const editorRef = useRef<EditorRef>(null);
 
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [isAIChatOpen, setIsAIChatOpen] = useState(false); // 新增状态
   const [isEditorReady, setIsEditorReady] = useState(false);
   const [editorContent, setEditorContent] = useState(""); // 新增：用于存储编辑器内容
-
-  const debouncedSave = debounce((id: number, content: string) => {
-    updateArticleContent(id, content);
-  }, 1000);
 
   // 新增：监听 selectedArticleId 的变化
   useEffect(() => {
@@ -65,12 +59,7 @@ export default function Write() {
     }
   };
 
-  const handleArticleSelect = (article: Article) => {
-    selectArticle(article.id);
-  };
-
   const handleEditorChange = (value: string) => {
-    setHasUnsavedChanges(true);
     if (selectedArticleId) {
       updateLocalArticleContent(selectedArticleId, value); // 立即更新本地状态
       debouncedSave(selectedArticleId, value); // debounce 保存到云端
@@ -90,7 +79,7 @@ export default function Write() {
       <div className="min-h-screen bg-background flex">
         <ArticleList
           articles={articles}
-          onSelect={handleArticleSelect}
+          onSelect={(article) => selectArticle(article.id)}
           onAddArticle={addNewArticle}
           onDeleteArticle={deleteArticleById}
           onUpdateTitle={updateArticleTitle}

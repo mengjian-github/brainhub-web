@@ -7,6 +7,7 @@ import {
 } from "@/lib/supabase/articles";
 import { useAuth } from "@/hooks/auth-context";
 import { toast } from "react-hot-toast";
+import { debounce } from "lodash";
 
 export interface Article {
   id: number;
@@ -127,6 +128,10 @@ export function useArticles() {
     return articles.find((article) => article.id === selectedArticleId);
   }, [articles, selectedArticleId]);
 
+  const debouncedSave = debounce((id: number, content: string) => {
+    updateArticleContent(id, content);
+  }, 1000);
+
   return {
     articles,
     selectedArticleId,
@@ -137,6 +142,7 @@ export function useArticles() {
     selectArticle,
     getSelectedArticle,
     updateLocalArticleContent,
+    debouncedSave,
     isLoading, // 新增：返回加载状态
   };
 }
