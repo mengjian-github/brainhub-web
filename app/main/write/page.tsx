@@ -9,6 +9,8 @@ import ProtectedRoute from "@/components/protected-route";
 import { updateArticle, fetchArticle } from "@/lib/supabase/articles"; // 导入Supabase方法
 import debounce from "lodash/debounce";
 import toast from "react-hot-toast";
+import AIChatSidebar from "@/components/write/ai-chat-sidebar"; // 新增导入
+import { ChevronLeft, ChevronRight } from "lucide-react"; // 新增导入
 
 interface Article {
   id: number;
@@ -28,6 +30,7 @@ export default function Write() {
     "保存中" | "已保存" | "保存失败"
   >("已保存");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [isAIChatOpen, setIsAIChatOpen] = useState(false); // 新增状态
 
   const saveContent = useCallback(async (id: number, markdown: string) => {
     setSaveStatus("保存中");
@@ -110,8 +113,12 @@ export default function Write() {
           setArticles={setArticles}
           selectedArticleId={selectedArticleId}
         />
-        <main className="flex-1">
-          <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <main
+          className={`flex-1 transition-all duration-300 ease-in-out ${
+            isAIChatOpen ? "mr-1/3" : ""
+          }`}
+        >
+          <div className="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div className="bg-card shadow">
               <div className="p-4 border-b flex justify-between items-center">
                 <h2 className="text-2xl font-semibold">智脑写作</h2>
@@ -141,7 +148,20 @@ export default function Write() {
               />
             </div>
           </div>
+          <button
+            className="fixed right-0 top-4 bg-primary text-white p-2 rounded-l-md z-50 transition-all duration-300 ease-in-out"
+            onClick={() => setIsAIChatOpen(!isAIChatOpen)}
+            aria-label={isAIChatOpen ? "收起AI助手" : "展开AI助手"}
+            style={{ right: isAIChatOpen ? "calc(33.333% - 2rem)" : "0" }}
+          >
+            {isAIChatOpen ? (
+              <ChevronRight size={24} />
+            ) : (
+              <ChevronLeft size={24} />
+            )}
+          </button>
         </main>
+        <AIChatSidebar isOpen={isAIChatOpen} />
       </div>
     </ProtectedRoute>
   );
