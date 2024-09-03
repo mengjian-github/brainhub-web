@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/auth-context";
 
-export default function Login() {
+function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -62,5 +62,13 @@ export default function Login() {
         </Button>
       </div>
     </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<div>加载中...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
